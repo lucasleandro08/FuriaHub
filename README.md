@@ -176,14 +176,5 @@ COOKIE_DOMAIN=.seusite.com
   <li>Tokens JWT com expiração</li>
 </ul>
 
-<h2>🔮 Melhorias Futuras</h2>
-<ul>
-  <li>Sistema de notificações</li>
-  <li>Integração com mais redes sociais</li>
-  <li>Painel administrativo</li>
-  <li>Sistema de recompensas</li>
-  <li>API mais documentada (Swagger/OpenAPI)</li>
-</ul>
-
 <h2>🎯 Considerações Finais</h2>
 <p>O FuriaHub é uma plataforma completa para engajamento de fãs, combinando autenticação segura, integração com redes sociais e verificação de identidade via IA. A arquitetura modular permite fácil expansão com novos recursos e integrações.</p>
