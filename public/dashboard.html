@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FÚRIA GG - Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .twitter-btn {
+      background: #1DA1F2;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 9999px;
+      font-weight: bold;
+      display: inline-flex;
+      align-items: center;
+      transition: all 0.3s;
+    }
+    .twitter-btn:hover {
+      background: #1991DA;
+      transform: translateY(-2px);
+    }
+    .twitter-icon {
+      margin-right: 8px;
+      width: 20px;
+      height: 20px;
+    }
+    .leaderboard-card {
+      background: linear-gradient(135deg, #1A1A1A 0%, #0A0A0A 100%);
+      border: 1px solid #333;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .furia-btn {
+      background: linear-gradient(135deg, #C4C4C4 0%, #1A1A1A 100%);
+      color: #0A0A0A;
+      border: 2px solid #FFFFFF;
+      font-weight: 800;
+      border-radius: 8px;
+      padding: 12px 24px;
+      transition: all 0.3s;
+    }
+    .furia-btn:hover {
+      background: #FFFFFF;
+      transform: translateY(-2px);
+    }
+    .furia-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body class="bg-black text-white min-h-screen">
+  <div class="container mx-auto px-4 py-12">
+    <header class="flex justify-between items-center mb-12">
+      <div class="flex items-center gap-3">
+      <img src="Assets/Furia_Esports_logo.png" alt="Logo FÚRIA" class="w-16 h-16 invert">
+      <div class="h-12 w-[2px] bg-[#333] rotate-12"></div>
+      <h1 class="text-2xl md:text-3xl font-black uppercase tracking-widest flex items-center gap-1">
+        <span class="text-[#C4C4C4]">FÚRIA</span>
+        <span class="text-white">RANKING</span>
+      </h1>
+    </div>
+      
+      <div id="auth-section"></div>
+    </header>
+
+    <div class="leaderboard-card p-8 mb-8">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold">#FURIAGG</h2>
+        <button id="refresh-btn" class="furia-btn">
+          Atualizar Pontos
+        </button>
+      </div>
+      <div id="leaderboard" class="space-y-4">
+        <div class="text-center py-12">
+          <p class="text-gray-400">Carregando ranking...</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="user-stats" class="leaderboard-card p-8 hidden">
+      <h2 class="text-2xl font-bold mb-4">Seus Pontos</h2>
+      <div class="flex items-center">
+        <div class="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mr-4">
+          <img id="user-avatar" src="" alt="Avatar" class="w-12 h-12 rounded-full">
+        </div>
+        <div>
+          <h3 id="username" class="text-xl font-bold"></h3>
+          <p class="text-gray-400">Você tem <span id="user-points" class="text-white font-bold">0</span> pontos</p>
+          <p class="text-gray-500 text-sm" id="last-update"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const refreshBtn = document.getElementById('refresh-btn');
+  const authSection = document.getElementById('auth-section');
+  const leaderboardEl = document.getElementById('leaderboard');
+  const userStatsEl = document.getElementById('user-stats');
+  const userAvatarEl = document.getElementById('user-avatar');
+  const usernameEl = document.getElementById('username');
+  const userPointsEl = document.getElementById('user-points');
+  const lastUpdateEl = document.getElementById('last-update');
+
+  function getAuthToken() {
+    const token = localStorage.getItem('authToken') || getCookie('authToken');
+    return token;
+  }
+
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+  }
+
+  function saveToken(token) {
+    localStorage.setItem('authToken', token);
+    document.cookie = `authToken=${token}; path=/; max-age=86400; SameSite=Lax; Secure`;
+    sessionStorage.setItem('authToken', token);
+  }
+
+  async function checkAuth() {
+    const token = getAuthToken();
+    if (!token) return null;
+
+    try {
+      const response = await fetch('/api/me', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include'
+      });
+      
+      if (!response.ok) {
+        if (response.status === 401) clearAuth();
+        return null;
+      }
+
+      return await response.json().then(data => data.user);
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function clearAuth() {
+    localStorage.removeItem('authToken');
+    document.cookie = 'authToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    sessionStorage.removeItem('authToken');
+  }
+
+  function createTwitterButton() {
+    const btn = document.createElement('button');
+    btn.className = 'twitter-btn';
+    btn.innerHTML = `
+      <svg class="twitter-icon" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723 10.054 10.054 0 01-3.127 1.184 4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+      </svg>
+      Conectar Twitter
+    `;
+
+    btn.onclick = connectTwitter;
+    return btn;
+  }
+
+  async function connectTwitter() {
+    try {
+      const btn = document.getElementById('connect-twitter-btn');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = `
+          <svg class="twitter-icon animate-spin" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723 10.054 10.054 0 01-3.127 1.184 4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+          </svg>
+          Conectando...
+        `;
+      }
+
+      const response = await fetch('/twitter/connect', {credentials: 'include'});
+      if (!response.ok) throw new Error('Falha na conexão com Twitter');
+      
+      const { redirectUrl } = await response.json();
+      window.location.href = redirectUrl;
+    } catch (error) {
+      const btn = document.getElementById('connect-twitter-btn');
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = `
+          <svg class="twitter-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723 10.054 10.054 0 01-3.127 1.184 4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+          </svg>
+          Tentar novamente
+        `;
+      }
+      showNotification('Erro ao conectar com Twitter: ' + error.message, 'error');
+    }
+  }
+
+  async function updatePoints() {
+    if (!refreshBtn) return;
+
+    try {
+      refreshBtn.disabled = true;
+      refreshBtn.textContent = 'Atualizando...';
+      
+      const token = getAuthToken();
+      if (!token) {
+        showNotification('Sessão expirada. Por favor, faça login novamente.', 'error');
+        setTimeout(() => window.location.reload(), 2000);
+        return;
+      }
+
+      const response = await fetch('/api/update-points', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include'
+      });
+      
+      if (!response.ok) {
+        const error = await response.json().catch(() => ({ error: 'Erro desconhecido' }));
+        throw new Error(error.error || 'Falha ao atualizar pontos');
+      }
+
+      const data = await response.json();
+      showNotification(`Pontos atualizados: ${data.pontos || 0} tweets encontrados`, 'success');
+      
+      const user = await checkAuth();
+      if (user) {
+        renderUserSection(user);
+        updateUserStats(user);
+      }
+      
+      await loadLeaderboard();
+    } catch (error) {
+      showNotification(error.message, 'error');
+      if (error.message.includes('token') || error.message.includes('401')) {
+        clearAuth();
+        setTimeout(() => window.location.reload(), 2000);
+      }
+    } finally {
+      if (refreshBtn) {
+        refreshBtn.disabled = false;
+        refreshBtn.textContent = 'Atualizar Pontos';
+      }
+    }
+  }
+
+  function showNotification(message, type = 'info') {
+    const colors = {
+      success: 'bg-green-600',
+      error: 'bg-red-600',
+      info: 'bg-blue-600'
+    };
+
+    const notification = document.createElement('div');
+    notification.className = `fixed top-4 right-4 ${colors[type]} text-white px-4 py-2 rounded-lg shadow-lg z-50`;
+    notification.textContent = message;
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+      notification.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+      setTimeout(() => notification.remove(), 300);
+    }, 5000);
+  }
+
+  function renderUserSection(user) {
+    if (!authSection) return;
+
+    authSection.innerHTML = '';
+    
+    const userDiv = document.createElement('div');
+    userDiv.className = 'flex items-center';
+    
+    userDiv.innerHTML = `
+      <img src="${user.twitterAvatar || user.avatar || 'https://via.placeholder.com/40'}" 
+           class="w-10 h-10 rounded-full mr-3">
+      <div>
+        <span class="font-bold block">${user.nome}</span>
+        ${user.twitterUsername ? `<span class="text-gray-400 text-sm">@${user.twitterUsername}</span>` : ''}
+      </div>
+    `;
+
+    authSection.appendChild(userDiv);
+
+    if (!user.twitterId) {
+      authSection.appendChild(createTwitterButton());
+    }
+  }
+
+  function updateUserStats(user) {
+    if (!userStatsEl) return;
+    
+    userStatsEl.classList.remove('hidden');
+    
+    if (userAvatarEl) userAvatarEl.src = user.twitterAvatar || user.avatar || 'https://via.placeholder.com/40';
+    if (usernameEl) usernameEl.textContent = user.nome;
+    if (userPointsEl) userPointsEl.textContent = user.pontosFuriaGG || 0;
+    
+    if (lastUpdateEl) {
+      lastUpdateEl.textContent = user.lastTwitterUpdate 
+        ? `Atualizado em: ${new Date(user.lastTwitterUpdate).toLocaleString()}`
+        : 'Não atualizado recentemente';
+
+      document.querySelectorAll('.twitter-btn').forEach(btn => btn.style.display = 'none');
+    }
+  }
+
+  async function loadLeaderboard() {
+    if (!leaderboardEl) return;
+
+    try {
+      leaderboardEl.innerHTML = '<div class="text-center py-12"><p class="text-gray-400">Carregando ranking...</p></div>';
+      
+      const response = await fetch('/api/leaderboard');
+      if (!response.ok) throw new Error('Erro ao carregar ranking');
+      
+      const data = await response.json();
+      if (!data.ranking || data.ranking.length === 0) {
+        leaderboardEl.innerHTML = '<p class="text-gray-400">Nenhum participante ainda</p>';
+        return;
+      }
+      
+      leaderboardEl.innerHTML = data.ranking.map((user, index) => `
+        <div class="flex items-center justify-between p-4 rounded-lg hover:bg-gray-900 transition-colors">
+          <div class="flex items-center">
+            <div class="${getRankColor(index)} w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4">
+              ${index + 1}
+            </div>
+            <div class="flex items-center">
+              <img src="${user.twitterAvatar || 'https://via.placeholder.com/40'}" 
+                   class="w-10 h-10 rounded-full mr-3">
+              <div>
+                <h3 class="font-bold">${user.nome}</h3>
+                ${user.twitterUsername ? `<p class="text-gray-400 text-sm">@${user.twitterUsername}</p>` : ''}
+              </div>
+            </div>
+          </div>
+          <div class="font-bold">${user.pontosFuriaGG} pts</div>
+        </div>
+      `).join('');
+    } catch (error) {
+      leaderboardEl.innerHTML = '<p class="text-red-400">Erro ao carregar ranking</p>';
+    }
+  }
+
+  function getRankColor(index) {
+    return [
+      'bg-yellow-500 text-black',
+      'bg-gray-400 text-black',
+      'bg-amber-700 text-white',
+      'bg-gray-800'
+    ][Math.min(index, 3)];
+  }
+
+  async function init() {
+    try {
+      const user = await checkAuth();
+      
+      if (user) {
+        renderUserSection(user);
+        updateUserStats(user);
+      } else if (authSection) {
+        authSection.appendChild(createTwitterButton());
+      }
+      
+      await loadLeaderboard();
+      
+      if (refreshBtn) refreshBtn.addEventListener('click', updatePoints);
+    } catch (error) {
+      showNotification('Erro ao carregar a página', 'error');
+    }
+  }
+
+  init();
+});
+</script>
+</html>

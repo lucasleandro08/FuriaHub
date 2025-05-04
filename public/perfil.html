@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FÚRIA Hub - Perfil</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --furia-black: #0A0A0A;
+      --furia-white: #FFFFFF;
+      --furia-gray: #1A1A1A;
+      --furia-silver: #C4C4C4;
+    }
+    body {
+      font-family: 'Archivo', sans-serif;
+      background: linear-gradient(45deg, var(--furia-black) 0%, #111 100%);
+      color: var(--furia-white);
+    }
+    .furia-depth { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); }
+    .btn-furia {
+      background: linear-gradient(135deg, var(--furia-silver) 0%, var(--furia-gray) 100%);
+      color: var(--furia-black);
+      border: 2px solid var(--furia-white);
+      font-weight: 800;
+      border-radius: 8px;
+      padding: 1.2rem 2.5rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .btn-furia:hover {
+      background: var(--furia-white);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(255, 255, 255, 0.1);
+    }
+    .btn-furia-outline {
+      background: transparent;
+      color: var(--furia-white);
+      border: 2px solid var(--furia-silver);
+      font-weight: 800;
+      border-radius: 8px;
+      padding: 1.2rem 2.5rem;
+      transition: all 0.3s;
+    }
+    .btn-furia-outline:hover {
+      background: var(--furia-gray);
+      border-color: var(--furia-white);
+    }
+    .input-furia {
+      background: var(--furia-gray);
+      border: 2px solid var(--furia-silver);
+      color: var(--furia-white);
+      border-radius: 6px;
+      padding: 1rem;
+      transition: all 0.3s;
+    }
+    .input-furia:focus {
+      border-color: var(--furia-white);
+      background: var(--furia-black);
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
+      outline: none;
+    }
+    .text-stroke {
+      -webkit-text-stroke: 1px var(--furia-silver);
+      -webkit-text-fill-color: #fff;
+    }
+    .avatar-container {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 3px solid var(--furia-silver);
+      overflow: hidden;
+      background-color: var(--furia-gray);
+    }
+    .avatar-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      font-weight: bold;
+      color: var(--furia-silver);
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+  <header class="border-b border-[#333]">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <img src="Assets/Furia_Esports_logo.png" alt="Logo FÚRIA" class="w-16 h-16 invert" />
+        <div class="h-12 w-[2px] bg-[#333] rotate-12"></div>
+        <h1 class="text-3xl font-black uppercase tracking-widest">
+          <span class="text-[#C4C4C4]">FÚRIA</span>
+          <span class="text-white">HUB</span>
+        </h1>
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="home.html">
+          <button class="font-bold text-[#C4C4C4] hover:text-white transition">INÍCIO</button>
+        </a>
+        <div class="h-8 w-[2px] bg-[#333]"></div>
+        <button class="p-2 hover:bg-white/10 rounded-lg transition" aria-label="Perfil">
+          <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2" fill="none" />
+            <path stroke="currentColor" stroke-width="2" d="M4 20c0-4 4-6 8-6s8 2 8 6" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Conteúdo principal da página de perfil -->
+  <main class="flex-1 flex items-center justify-center px-4 py-12">
+    <div class="max-w-4xl w-full p-12 bg-[#0A0A0A] border-2 border-[#333] rounded-xl furia-depth">
+      <div class="space-y-10">
+        <div class="flex justify-between items-start">
+          <div>
+            <h1 class="text-5xl font-black mb-2 text-stroke leading-tight">
+              SEU PERFIL
+            </h1>
+            <p class="text-lg text-[#C4C4C4]">
+              Gerencie suas informações e preferências
+            </p>
+          </div>
+          <a href="home.html" class="btn-furia-outline px-6 py-3">
+            VOLTAR
+          </a>
+        </div>
+
+        <div class="flex flex-col md:flex-row gap-8">
+          <div class="flex flex-col items-center space-y-4">
+            <div class="avatar-container">
+              <div id="avatar-placeholder" class="avatar-placeholder"></div>
+              <img id="avatar-image" src="" alt="Avatar do usuário" class="hidden w-full h-full object-cover" />
+            </div>
+            <button id="change-avatar" class="btn-furia px-4 py-2 text-sm">
+              ALTERAR AVATAR
+            </button>
+            <input type="file" id="avatar-upload" accept="image/*" class="hidden" />
+          </div>
+
+          <div class="flex-1 space-y-6">
+            <div>
+              <label class="block text-sm font-bold text-[#C4C4C4] mb-3 uppercase tracking-wide">
+                Nome
+              </label>
+              <div class="input-furia w-full bg-[#1A1A1A]">
+                <span id="user-name" class="text-white"></span>
+              </div>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-bold text-[#C4C4C4] mb-3 uppercase tracking-wide">
+                E-mail
+              </label>
+              <div class="input-furia w-full bg-[#1A1A1A]">
+                <span id="user-email" class="text-white"></span>
+              </div>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-bold text-[#C4C4C4] mb-3 uppercase tracking-wide">
+                Data de Cadastro
+              </label>
+              <div class="input-furia w-full bg-[#1A1A1A]">
+                <span id="user-created-at" class="text-white"></span>
+              </div>
+            </div>
+            
+            <div class="pt-4 flex gap-4">
+              <a href="home.html" class="btn-furia-outline flex-1 py-4 text-center">
+                VOLTAR
+              </a>
+              <button id="change-password" class="btn-furia flex-1 py-4 text-lg font-black tracking-widest">
+                ALTERAR SENHA
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal para alteração de senha -->
+  <div id="password-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center hidden z-50">
+    <div class="bg-[#0A0A0A] border-2 border-[#333] rounded-xl p-8 max-w-md w-full furia-depth">
+      <h2 class="text-2xl font-bold mb-6 text-center">ALTERAR SENHA</h2>
+      <form id="password-form" class="space-y-6">
+        <div>
+          <label for="current-password" class="block text-sm font-bold text-[#C4C4C4] mb-2 uppercase tracking-wide">
+            Senha Atual
+          </label>
+          <input
+            type="password"
+            id="current-password"
+            class="input-furia w-full"
+            placeholder="••••••••"
+            required
+          />
+        </div>
+        <div>
+          <label for="new-password" class="block text-sm font-bold text-[#C4C4C4] mb-2 uppercase tracking-wide">
+            Nova Senha
+          </label>
+          <input
+            type="password"
+            id="new-password"
+            class="input-furia w-full"
+            placeholder="••••••••"
+            required
+          />
+        </div>
+        <div>
+          <label for="confirm-new-password" class="block text-sm font-bold text-[#C4C4C4] mb-2 uppercase tracking-wide">
+            Confirme a Nova Senha
+          </label>
+          <input
+            type="password"
+            id="confirm-new-password"
+            class="input-furia w-full"
+            placeholder="••••••••"
+            required
+          />
+        </div>
+        <div class="flex gap-4 pt-2">
+          <button type="button" id="cancel-password" class="btn-furia flex-1 py-3 bg-transparent text-white border-white">
+            CANCELAR
+          </button>
+          <button type="submit" class="btn-furia flex-1 py-3">
+            SALVAR
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer class="py-8 mt-12 border-t border-[#333]">
+    <div class="max-w-7xl mx-auto text-center">
+      <p class="text-sm text-[#666]">
+        © 2025 FURIA ESPORTS
+      </p>
+    </div>
+  </footer>
+
+  <!-- Script principal de gerenciamento do perfil -->
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+    function getCookie(name) {
+        const cookies = document.cookie.split('; ');
+        for (const cookie of cookies) {
+            const [cookieName, ...valueParts] = cookie.split('=');
+            if (cookieName === name) return valueParts.join('=');
+        }
+        return null;
+    }
+    
+    const token = localStorage.getItem('authToken') || getCookie('authToken');
+
+    if (!token) {
+        return window.location.href = '/login';
+    }
+
+    try {
+        const response = await fetch('/check-auth', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include'
+        });
+
+        const responseData = await response.json();
+
+        if (!response.ok) {
+            localStorage.removeItem('authToken');
+            return window.location.href = '/login';
+        }
+
+        if (responseData.authenticated && responseData.user) {
+            document.getElementById('user-name').textContent = responseData.user.nome || 'Não informado';
+            document.getElementById('user-email').textContent = responseData.user.email || 'Não informado';
+            document.getElementById('user-created-at').textContent = new Date().toLocaleDateString('pt-BR');
+
+            const avatarPlaceholder = document.getElementById('avatar-placeholder');
+            const firstNameLetter = responseData.user.nome ? responseData.user.nome.charAt(0).toUpperCase() : '?';
+            avatarPlaceholder.textContent = firstNameLetter;
+
+            if (responseData.user.avatar) {
+                const avatarImage = document.getElementById('avatar-image');
+                avatarImage.src = responseData.user.avatar;
+                avatarImage.classList.remove('hidden');
+                avatarPlaceholder.classList.add('hidden');
+            }
+        }
+
+        setupEventListeners();
+        
+    } catch (error) {
+        window.location.href = '/login';
+    }
+});
+
+function setupEventListeners() {
+    document.getElementById('change-avatar').addEventListener('click', () => {
+        document.getElementById('avatar-upload').click();
+    });
+
+    document.getElementById('avatar-upload').addEventListener('change', handleAvatarUpload);
+    
+    const passwordModal = document.getElementById('password-modal');
+    document.getElementById('change-password').addEventListener('click', () => {
+        passwordModal.classList.remove('hidden');
+    });
+
+    document.getElementById('cancel-password').addEventListener('click', () => {
+        passwordModal.classList.add('hidden');
+        document.getElementById('password-form').reset();
+    });
+
+    document.getElementById('password-form').addEventListener('submit', handlePasswordChange);
+}
+
+async function handleAvatarUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    try {
+        const formData = new FormData();
+        formData.append('avatar', file);
+
+        const response = await fetch('/api/upload-avatar', {
+            method: 'POST',
+            body: formData,
+            credentials: 'include'
+        });
+
+        const result = await response.json();
+        
+        if (response.ok) {
+            const avatarImage = document.getElementById('avatar-image');
+            avatarImage.src = URL.createObjectURL(file);
+            avatarImage.classList.remove('hidden');
+            document.getElementById('avatar-placeholder').classList.add('hidden');
+            alert('Avatar atualizado com sucesso!');
+        } else {
+            throw new Error(result.message || 'Erro ao atualizar avatar');
+        }
+    } catch (error) {
+        alert('Falha ao atualizar avatar: ' + error.message);
+    }
+}
+
+async function handlePasswordChange(e) {
+    e.preventDefault();
+
+    const currentPassword = document.getElementById('current-password').value;
+    const newPassword = document.getElementById('new-password').value;
+    const confirmNewPassword = document.getElementById('confirm-new-password').value;
+
+    if (newPassword !== confirmNewPassword) {
+        alert('As novas senhas não coincidem!');
+        return;
+    }
+
+    if (newPassword.length < 6) {
+        alert('A nova senha deve ter pelo menos 6 caracteres!');
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/change-password', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                currentPassword,
+                newPassword
+            }),
+            credentials: 'include'
+        });
+
+        const result = await response.json();
+        
+        if (response.ok) {
+            alert('Senha alterada com sucesso!');
+            document.getElementById('password-modal').classList.add('hidden');
+            document.getElementById('password-form').reset();
+        } else {
+            throw new Error(result.message || 'Erro ao alterar senha');
+        }
+    } catch (error) {
+        alert('Erro ao alterar senha: ' + error.message);
+    }
+}
+  </script>
+</body>
+</html>

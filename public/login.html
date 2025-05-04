@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FÚRIA Hub - Login</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --furia-black: #0A0A0A;
+      --furia-white: #FFFFFF;
+      --furia-gray: #1A1A1A;
+      --furia-silver: #C4C4C4;
+    }
+
+    body {
+      font-family: 'Archivo', sans-serif;
+      background: linear-gradient(45deg, var(--furia-black) 0%, #111 100%);
+      color: var(--furia-white);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .furia-depth {
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .text-stroke {
+      -webkit-text-stroke: 1px var(--furia-silver);
+      color: transparent;
+    }
+
+    .btn-furia {
+      background: linear-gradient(135deg, var(--furia-silver) 0%, var(--furia-gray) 100%);
+      color: var(--furia-black);
+      border: 2px solid var(--furia-white);
+      font-weight: 800;
+      border-radius: 8px;
+      padding: 1.2rem 2.5rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+
+    .btn-furia:hover {
+      background: var(--furia-white);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(255, 255, 255, 0.1);
+    }
+
+    .input-furia {
+      background: var(--furia-gray);
+      border: 2px solid var(--furia-silver);
+      color: var(--furia-white);
+      border-radius: 6px;
+      padding: 1rem;
+      transition: all 0.3s;
+    }
+
+    .input-furia:focus {
+      border-color: var(--furia-white);
+      background: var(--furia-black);
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
+      outline: none;
+    }
+    
+    .message {
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      border-radius: 0.5rem;
+      text-align: center;
+      font-weight: 600;
+    }
+    
+    .message-error {
+      background-color: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+    }
+    
+    .message-success {
+      background-color: rgba(16, 185, 129, 0.2);
+      color: #10b981;
+    }
+  </style>
+</head>
+<body>
+  <header class="border-b border-[#333]">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <img src="/Assets/Furia_Esports_logo.png" alt="Logo FÚRIA" class="w-16 h-16 invert">
+        <div class="h-12 w-[2px] bg-[#333] rotate-12"></div>
+        <h1 class="text-3xl font-black uppercase tracking-widest">
+          <span class="text-[#C4C4C4]">FÚRIA</span>
+          <span class="text-white">HUB</span>
+        </h1>
+      </div>
+
+      <div class="flex items-center gap-6">
+        <a href="/signup">
+          <button type="button" class="font-bold text-[#C4C4C4] hover:text-white transition">CRIAR CONTA</button>
+        </a>
+        <div class="h-8 w-[2px] bg-[#333]"></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 flex items-center justify-center px-4 py-12">
+    <div class="max-w-2xl w-full p-12 bg-[var(--furia-black)] border-2 border-[#333] rounded-xl furia-depth">
+      <div class="space-y-10">
+        <header class="text-center">
+          <h1 class="text-5xl font-black mb-6 text-stroke leading-tight">
+            BEM-VINDO DE VOLTA
+          </h1>
+          <p class="text-lg text-[#C4C4C4] max-w-xl mx-auto">
+            Faça login para acessar sua conta e continuar dominando o ecossistema FÚRIA.
+          </p>
+        </header>
+
+        <!-- Área de mensagens de status (erro ou sucesso) -->
+        <div id="login-message" class="hidden message"></div>
+
+        <form id="login-form" class="space-y-8" autocomplete="off">
+          <div class="form-group">
+            <label for="login-email" class="block text-sm font-bold text-[#C4C4C4] mb-3 uppercase tracking-wide">
+              E-mail
+            </label>
+            <input
+              type="email"
+              id="login-email"
+              name="email"
+              class="input-furia w-full"
+              placeholder="EMAIL@FURIA.COM"
+              required
+              autocomplete="username"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="login-password" class="block text-sm font-bold text-[#C4C4C4] mb-3 uppercase tracking-wide">
+              Senha
+            </label>
+            <input
+              type="password"
+              id="login-password"
+              name="password"
+              class="input-furia w-full"
+              placeholder="••••••••"
+              required
+              autocomplete="current-password"
+            />
+          </div>
+
+          <button type="submit" class="btn-furia w-full py-4 text-lg font-black tracking-widest">
+            ENTRAR →
+          </button>
+        </form>
+
+        <div class="text-center mt-6">
+          <p class="text-[#666] text-sm">
+            Ainda não tem uma conta?
+            <a href="/signup" class="font-bold text-[#C4C4C4] hover:text-white transition ml-1">
+              CRIE SUA CONTA
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="py-8 mt-12 border-t border-[#333]">
+    <div class="max-w-7xl mx-auto text-center">
+      <p class="text-sm text-[#666]">
+        © 2025 FURIA ESPORTS<br />
+      </p>
+    </div>
+  </footer>
+
+ <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const loginForm = document.getElementById('login-form');
+      const messageDiv = document.getElementById('login-message');
+      
+      checkExistingSession(); // Verifica se há sessão ativa
+
+      if (loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+
+          hideMessage(); // Limpa mensagens anteriores
+
+          const email = document.getElementById('login-email').value.trim();
+          const password = document.getElementById('login-password').value;
+
+          if (!email || !password) {
+            showMessage('Por favor, preencha todos os campos', 'error');
+            return;
+          }
+
+          const submitButton = loginForm.querySelector('button[type="submit"]');
+          const originalButtonText = submitButton.textContent;
+          submitButton.disabled = true;
+          submitButton.innerHTML = '<span class="inline-block animate-spin">⏳</span> Processando...';
+
+          try {
+            const response = await fetch('/login', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ 
+                email: email,
+                senha: password 
+              })
+            });
+
+            const result = await response.json();
+            
+            if (!response.ok) {
+              throw new Error(result.error || `Erro ${response.status}`);
+            }
+
+            // Salva o token localmente
+            if (result.token) {
+              localStorage.setItem('authToken', result.token);
+            }
+
+            showMessage('Login realizado com sucesso! Redirecionando...', 'success');
+
+            submitButton.disabled = false;
+            submitButton.textContent = originalButtonText;
+
+            setTimeout(() => {
+              window.location.href = result.redirect || '/home';
+            }, 1500);
+
+          } catch (error) {
+            console.error('Erro no login:', error);
+
+            let errorMessage = error.message;
+            if (error.message.includes('Failed to fetch')) {
+              errorMessage = 'Não foi possível conectar ao servidor. Verifique sua conexão.';
+            } else if (error.message.includes('Credenciais inválidas')) {
+              errorMessage = 'Email ou senha incorretos. Por favor, tente novamente.';
+            }
+
+            showMessage(errorMessage, 'error');
+            submitButton.disabled = false;
+            submitButton.textContent = originalButtonText;
+          }
+        });
+      }
+
+      // Checa se já existe token válido no localStorage
+      async function checkExistingSession() {
+        try {
+          const token = localStorage.getItem('authToken');
+          if (!token) return;
+          
+          const response = await fetch('/check-auth', {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          });
+          
+          if (response.ok) {
+            const { authenticated } = await response.json();
+            if (authenticated) {
+              window.location.href = '/home';
+            }
+          }
+        } catch (error) {
+          console.error('Erro ao verificar sessão:', error);
+          localStorage.removeItem('authToken');
+        }
+      }
+
+      // Exibe mensagens de erro ou sucesso
+      function showMessage(message, type = 'info') {
+        messageDiv.textContent = message;
+        messageDiv.className = `message message-${type}`;
+        messageDiv.classList.remove('hidden');
+      }
+
+      // Oculta a área de mensagem
+      function hideMessage() {
+        messageDiv.classList.add('hidden');
+        messageDiv.textContent = '';
+      }
+    });
+</script>
+</body>
+</html>

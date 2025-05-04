@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FÚRIA Hub - Cadastro</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --furia-black: #0A0A0A;
+      --furia-white: #FFFFFF;
+      --furia-gray: #1A1A1A;
+      --furia-silver: #C4C4C4;
+    }
+    body {
+      font-family: 'Archivo', sans-serif;
+      background: linear-gradient(45deg, var(--furia-black) 0%, #111 100%);
+      color: var(--furia-white);
+    }
+    .furia-depth { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); }
+    .btn-furia {
+      background: linear-gradient(135deg, var(--furia-silver) 0%, var(--furia-gray) 100%);
+      color: var(--furia-black);
+      border: 2px solid var(--furia-white);
+      font-weight: 800;
+      border-radius: 8px;
+      padding: 1.2rem 2.5rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .btn-furia:hover {
+      background: var(--furia-white);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(255, 255, 255, 0.1);
+    }
+    .input-furia {
+      background: var(--furia-gray);
+      border: 2px solid var(--furia-silver);
+      color: var(--furia-white);
+      border-radius: 6px;
+      padding: 1rem;
+      transition: all 0.3s;
+    }
+    .input-furia:focus {
+      border-color: var(--furia-white);
+      background: var(--furia-black);
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
+      outline: none;
+    }
+    .text-stroke {
+      -webkit-text-stroke: 1px var(--furia-silver);
+      -webkit-text-fill-color: #fff;
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+  <header class="border-b border-[#333]">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <img src="Assets/Furia_Esports_logo.png" alt="Logo FÚRIA" class="w-16 h-16 invert" />
+        <div class="h-12 w-[2px] bg-[#333] rotate-12"></div>
+        <h1 class="text-3xl font-black uppercase tracking-widest">
+          <span class="text-[#C4C4C4]">FÚRIA</span>
+          <span class="text-white">HUB</span>
+        </h1>
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="/login">
+          <button class="font-bold text-[#C4C4C4] hover:text-white transition">ENTRAR</button>
+        </a>
+        <div class="h-8 w-[2px] bg-[#333]"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Formulário principal de cadastro -->
+  <main class="flex-1 flex items-center justify-center px-4 py-12">
+    <div class="max-w-2xl w-full p-12 bg-[#0A0A0A] border-2 border-[#333] rounded-xl furia-depth">
+      <div class="space-y-10">
+        <div class="text-center">
+          <h1 class="text-5xl font-black mb-6 text-stroke leading-tight">
+            JUNTE-SE À MATILHA
+          </h1>
+          <p class="text-lg text-[#C4C4C4] max-w-xl mx-auto">
+            Domine o ecossistema FÚRIA com acesso privilegiado
+          </p>
+        </div>
+
+        <form id="furia-form" class="space-y-8">
+          <div>
+            <label for="name" class="block text-sm font-bold text-[#C4C4C4] mb-3 uppercase tracking-wide">
+              Nome
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              class="input-furia w-full"
+              placeholder="SEU NOME DE COMBATE"
+              required
+            />
+          </div>
+          <div>
+            <label for="email" class="block text-sm font-bold text-[#C4C4C4] mb-3 uppercase tracking-wide">
+              E-mail
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="input-furia w-full"
+              placeholder="EMAIL@FURIA.COM"
+              required
+            />
+          </div>
+          <div>
+            <label for="confirm_email" class="block text-sm font-bold text-[#C4C4C4] mb-3 uppercase tracking-wide">
+              Confirme seu E-mail
+            </label>
+            <input
+              type="email"
+              id="confirm_email"
+              name="confirm_email"
+              class="input-furia w-full"
+              placeholder="EMAIL@FURIA.COM"
+              required
+            />
+          </div>
+          <div>
+            <label for="password" class="block text-sm font-bold text-[#C4C4C4] mb-3 uppercase tracking-wide">
+              Senha
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="input-furia w-full"
+              placeholder="••••••••"
+              required
+            />
+          </div>
+          <div>
+            <label for="confirm_password" class="block text-sm font-bold text-[#C4C4C4] mb-3 uppercase tracking-wide">
+              Confirme sua Senha
+            </label>
+            <input
+              type="password"
+              id="confirm_password"
+              name="confirm_password"
+              class="input-furia w-full"
+              placeholder="••••••••"
+              required
+            />
+          </div>
+          <button type="submit" class="btn-furia w-full py-4 text-lg font-black tracking-widest">
+            CRIAR CONTA →
+          </button>
+        </form>
+
+        <div class="text-center mt-6">
+          <p class="text-[#666] text-sm">
+            Já é da matilha?
+            <a href="/login" class="font-bold text-[#C4C4C4] hover:text-white transition ml-1">
+              ACESSE SUA CONTA
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="py-8 mt-12 border-t border-[#333]">
+    <div class="max-w-7xl mx-auto text-center">
+      <p class="text-sm text-[#666]">
+        © 2025 FURIA ESPORTS
+      </p>
+    </div>
+  </footer>
+
+  <!-- Script de validação e envio do formulário -->
+  <script>
+  document.getElementById('furia-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+  
+    const nome = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const confirm_email = document.getElementById('confirm_email').value;
+    const password = document.getElementById('password').value;
+    const confirm_password = document.getElementById('confirm_password').value;
+  
+    // Validações front-end antes do envio
+    if (email !== confirm_email) {
+      alert('Os e-mails não coincidem!');
+      return;
+    } 
+    if (password !== confirm_password) {
+      alert('As senhas não coincidem!');
+      return;
+    }
+  
+    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (!emailRegex.test(email)) {
+      alert('Por favor, insira um email válido (exemplo: usuario@dominio.com).');
+      return;
+    }
+  
+    if (password.length < 6) {
+      alert('A senha deve ter pelo menos 6 caracteres.');
+      return;
+    }
+  
+    // Feedback visual durante o processamento
+    const submitButton = this.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+    submitButton.textContent = 'Processando...';
+  
+    try {
+      const res = await fetch('/cadastro', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nome, email, senha: password }),
+        credentials: 'include'
+      });
+  
+      const data = await res.json();
+  
+      if (res.ok) {
+        alert('Cadastro realizado com sucesso! Redirecionando...');
+        setTimeout(() => {
+          window.location.href = data.redirect || '/home.html';
+        }, 1500);
+      } else {
+        alert(data.message || data.error || 'Erro ao cadastrar.');
+      }
+    } catch (error) {
+      console.error('Erro ao enviar requisição:', error);
+      alert('Erro ao conectar ao servidor. Verifique sua conexão ou tente novamente mais tarde.');
+    } finally {
+      submitButton.disabled = false;
+      submitButton.textContent = 'CRIAR CONTA →';
+    }
+  });
+</script>
+</body>
+</html>

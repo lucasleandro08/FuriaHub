@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FÚRIA Hub - Cadastro Completo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --furia-black: #0A0A0A;
+      --furia-white: #FFFFFF;
+      --furia-gray: #1A1A1A;
+      --furia-silver: #C4C4C4;
+    }
+
+    body {
+      font-family: 'Archivo', sans-serif;
+      background: linear-gradient(45deg, var(--furia-black) 0%, #111 100%);
+      color: var(--furia-white);
+    }
+
+    .furia-depth {
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .btn-furia {
+      background: linear-gradient(135deg, var(--furia-silver) 0%, var(--furia-gray) 100%);
+      color: var(--furia-black);
+      border: 2px solid var(--furia-white);
+      font-weight: 800;
+      border-radius: 8px;
+      padding: 1.2rem 2.5rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn-furia:hover {
+      background: var(--furia-white);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(255, 255, 255, 0.1);
+    }
+
+    .input-furia {
+      background: var(--furia-gray);
+      border: 2px solid var(--furia-silver);
+      color: var(--furia-white);
+      border-radius: 6px;
+      padding: 1rem;
+      transition: all 0.3s;
+    }
+
+    .input-furia:focus {
+      border-color: var(--furia-white);
+      background: var(--furia-black);
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
+      outline: none;
+    }
+
+    .text-stroke {
+      -webkit-text-stroke: 1px var(--furia-silver);
+    }
+
+    .drop-zone {
+      border: 2px dashed #ccc;
+      padding: 20px;
+      text-align: center;
+      margin: 20px 0;
+      cursor: pointer;
+      color: var(--furia-white);
+    }
+
+    .drop-zone:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .drop-zone.active {
+        border-color: #4CAF50;
+    }
+
+    .file-list {
+      margin-top: 10px;
+      color: var(--furia-silver);
+    }
+
+    #form-message {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      max-width: 400px;
+      padding: 16px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    #form-message.show {
+      opacity: 1;
+    }
+
+    #form-message.error {
+      background-color: #ff4444;
+      color: white;
+    }
+
+    #form-message.success {
+      background-color: #00C851;
+      color: white;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .animate-spin {
+      animation: spin 1s linear infinite;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+  <!-- Cabeçalho com logo e navegação -->
+  <header class="border-b border-[#333]">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <img src="Assets/Furia_Esports_logo.png" alt="Logo FÚRIA" class="w-16 h-16 invert" />
+        <div class="h-12 w-[2px] bg-[#333] rotate-12"></div>
+        <h1 class="text-3xl font-black uppercase tracking-widest">
+          <span class="text-[#C4C4C4]">FÚRIA</span>
+          <span class="text-white">HUB</span>
+        </h1>
+      </div>
+      <div class="flex items-center gap-6">
+        <button class="font-bold text-[#C4C4C4] hover:text-white transition">ENTRAR</button>
+        <div class="h-8 w-[2px] bg-[#333]"></div>
+        <button class="p-2 hover:bg-white/10 rounded-lg transition" aria-label="Perfil">
+          <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Área principal com o formulário -->
+  <main class="flex-1 flex items-center justify-center px-4 py-12">
+    <div class="max-w-2xl w-full p-12 bg-[#0A0A0A] border-2 border-[#333] rounded-xl furia-depth">
+      <div class="space-y-10">
+        <div class="text-center">
+          <h1 class="text-4xl md:text-5xl font-black mb-6 text-stroke leading-tight">
+            CADASTRO FÚRIA
+          </h1>
+          <p class="text-lg text-[#C4C4C4] max-w-xl mx-auto">
+            Preencha seus dados para garantir seu drop e fazer parte da matilha.
+          </p>
+        </div>
+
+        <form id="meuFormulario" class="space-y-8">
+          <!-- Campos obrigatórios -->
+          <div class="grid md:grid-cols-2 gap-8">
+            <div>
+              <label for="nome" class="block text-sm font-bold text-[#C4C4C4] mb-3 uppercase tracking-wide">
+                Nome completo
+              </label>
+              <input type="text" id="nome" name="nome" class="input-furia w-full" placeholder="Digite exatamente como no documento" required />
+            </div>
+            <div>
+              <label for="cpf" class="block text-sm font-bold text-[#C4C4C4] mb-3 uppercase tracking-wide">
+                CPF
+              </label>
+              <input type="text" id="cpf" name="cpf" class="input-furia w-full" placeholder="000.000.000-00" required />
+            </div>
+            <div class="md:col-span-2">
+              <label for="endereco" class="block text-sm font-bold text-[#C4C4C4] mb-3 uppercase tracking-wide">
+                Endereço completo
+              </label>
+              <input type="text" id="endereco" name="endereco" class="input-furia w-full" placeholder="Rua, número, bairro, cidade, UF" required />
+            </div>
+          </div>
+
+          <!-- Campos opcionais -->
+          <div class="space-y-6">
+            <div>
+              <label for="interesses" class="block text-sm font-bold text-[#C4C4C4] mb-3 uppercase tracking-wide">
+                Interesses (opcional)
+              </label>
+              <input type="text" id="interesses" name="interesses" class="input-furia w-full" placeholder="Ex: CS:GO, Valorant, Streetwear" />
+            </div>
+            <div>
+              <label for="atividades" class="block text-sm font-bold text-[#C4C4C4] mb-3 uppercase tracking-wide">
+                Atividades favoritas (opcional)
+              </label>
+              <input type="text" id="atividades" name="atividades" class="input-furia w-full" placeholder="Ex: assistir campeonatos, jogar online" />
+            </div>
+            <div>
+              <label for="eventos" class="block text-sm font-bold text-[#C4C4C4] mb-3 uppercase tracking-wide">
+                Participou de eventos FÚRIA no último ano? (opcional)
+              </label>
+              <select id="eventos" name="eventos" class="input-furia w-full">
+                <option value="">Selecione</option>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+              </select>
+            </div>
+            <div>
+              <label for="compras" class="block text-sm font-bold text-[#C4C4C4] mb-3 uppercase tracking-wide">
+                Realizou compras FÚRIA no último ano? (opcional)
+              </label>
+              <select id="compras" name="compras" class="input-furia w-full">
+                <option value="">Selecione</option>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+              </select>
+            </div>
+          </div>
+          
+          <!-- Upload de documentos -->
+          <div>
+            <label class="block text-sm font-bold text-[#C4C4C4] mb-3 uppercase tracking-wide">
+              Documentos necessários
+            </label>
+            <div id="dropZone" class="drop-zone">
+              <p>Arraste e solte arquivos aqui ou clique para selecionar</p>
+              <input type="file" id="fileInput" name="arquivos" multiple accept="image/*,.pdf" style="display: none;">
+              <div id="fileList" class="file-list"></div>
+            </div>
+            <p class="text-xs text-[#666] mt-2">
+              Envie: (1) Foto do seu documento de identificação (nome visível) e (2) Selfie segurando o documento
+            </p>
+          </div>
+
+          <!-- Botão de envio -->
+          <button type="submit" class="btn-furia w-full py-4 text-lg font-black tracking-widest">
+            ENVIAR FORMULÁRIO
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- Rodapé -->
+  <footer class="py-8 mt-12 border-t border-[#333]">
+    <div class="max-w-7xl mx-auto text-center">
+      <p class="text-sm text-[#666]">
+        © 2025 FURIA ESPORTS<br />
+      </p>
+    </div>
+  </footer>
+
+  <div id="form-message"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const dropZone = document.getElementById('dropZone');
+      const fileInput = document.getElementById('fileInput');
+      const fileList = document.getElementById('fileList');
+      const form = document.getElementById('meuFormulario');
+      const formMessage = document.getElementById('form-message');
+      let files = [];
+      let isSubmitting = false;
+
+      // Atualiza a lista de arquivos na interface
+      function updateFileList() {
+        fileList.innerHTML = '';
+        if (files.length > 0) {
+          fileList.innerHTML = '<strong>Arquivos selecionados:</strong><ul class="list-disc pl-5 mt-2">';
+          files.forEach((file) => {
+            fileList.innerHTML += `<li>${file.name} (${(file.size / 1024).toFixed(2)} KB)</li>`;
+          });
+          fileList.innerHTML += '</ul>';
+        }
+      }
+
+      // Configuração do drag and drop
+      dropZone.addEventListener('click', () => fileInput.click());
+      fileInput.addEventListener('change', (e) => {
+        files = Array.from(e.target.files);
+        updateFileList();
+      });
+      dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('active');
+      });
+      dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('active');
+      });
+      dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('active');
+        files = Array.from(e.dataTransfer.files);
+        fileInput.files = e.dataTransfer.files;
+        updateFileList();
+      });
+
+      // Exibe mensagem temporária
+      function showMessage(message, type = 'error') {
+        formMessage.textContent = message;
+        formMessage.className = 'show ' + type;
+        setTimeout(() => {
+          formMessage.classList.remove('show');
+        }, 5000);
+      }
+
+      function hideMessage() {
+        formMessage.classList.remove('show');
+      }
+
+      // Pega um cookie pelo nome
+      function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+      }
+
+      // Remove acentos e caracteres especiais
+      function normalizarTexto(texto) {
+        return texto
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/[^a-z0-9 ]/g, '')
+          .trim();
+      }
+
+      // Verifica se o nome é válido
+      function validarNome(nome) {
+        if (!nome || nome.length < 5) {
+          showMessage('Por favor, insira seu nome completo (mínimo 5 caracteres)', 'error');
+          return false;
+        }
+        return true;
+      }
+
+      // Lógica de envio do formulário
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        if (isSubmitting) return;
+        isSubmitting = true;
+        hideMessage();
+
+        const nomeInput = form.querySelector('#nome').value;
+        if (!validarNome(nomeInput)) {
+          isSubmitting = false;
+          return;
+        }
+
+        const token = localStorage.getItem('authToken') || getCookie('authToken');
+        if (!token) {
+          showMessage('Por favor, faça login novamente', 'error');
+          isSubmitting = false;
+          return setTimeout(() => window.location.href = '/login', 1500);
+        }
+
+        if (files.length < 2) {
+          showMessage('Envie pelo menos 2 imagens (documento + selfie)', 'error');
+          isSubmitting = false;
+          return;
+        }
+
+        const imageFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
+        if (imageFiles.length < 2) {
+          showMessage('Envie pelo menos 2 imagens (documento + selfie)', 'error');
+          isSubmitting = false;
+          return;
+        }
+
+        const submitButton = form.querySelector('button[type="submit"]');
+        const originalText = submitButton.innerHTML;
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<span class="inline-block animate-spin">⏳</span> Verificando...';
+
+        try {
+          const formData = new FormData(form);
+          const uniqueImageFiles = Array.from(new Set(imageFiles));
+          uniqueImageFiles.forEach(file => formData.append('arquivos', file));
+
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 30000);
+
+          const response = await fetch('/forms', {
+            method: 'POST',
+            body: formData,
+            headers: { 
+              'Authorization': `Bearer ${token}`,
+              'X-Requested-With': 'XMLHttpRequest'
+            },
+            signal: controller.signal
+          });
+
+          clearTimeout(timeoutId);
+
+          if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.error || `Erro ${response.status}`);
+          }
+
+          const result = await response.json();
+          showMessage('✅ Verificação concluída! Redirecionando...', 'success');
+          
+          setTimeout(() => {
+            form.reset();
+            files = [];
+            fileList.innerHTML = '';
+            window.location.href = result.redirect || '/dashboard';
+          }, 2000);
+
+        } catch (error) {
+          console.error('Erro no envio:', error);
+          let userMessage = 'Erro ao processar solicitação';
+          if (error.name === 'AbortError') {
+            userMessage = 'Tempo de espera esgotado. Tente novamente';
+          } else if (error.message.includes('Token')) {
+            userMessage = 'Sessão expirada. Faça login novamente';
+            setTimeout(() => window.location.href = '/login', 1500);
+          } else if (error.message.includes('texto na imagem') || error.message.includes('nome no documento')) {
+            userMessage = 'O nome no documento não confere com o digitado.';
+          } else if (error.message.includes('imagens não correspondem') || error.message.includes('selfie não corresponde')) {
+            userMessage = 'A selfie não corresponde à foto do documento.';
+          }
+          showMessage(userMessage, 'error');
+        } finally {
+          isSubmitting = false;
+          const submitButton = form.querySelector('button[type="submit"]');
+          if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.innerHTML = 'ENVIAR FORMULÁRIO';
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
