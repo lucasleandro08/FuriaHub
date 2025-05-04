@@ -25,7 +25,6 @@
 server.js          # Ponto de entrada do servidor
 routes/
   └── api.js       # Todas as rotas da aplicação
-models/            # Modelos do MongoDB
 uploads/           # Arquivos enviados pelos usuários
 public/            # Arquivos estáticos (HTML, CSS, JS)
 </pre>
